@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Upload new File</title>
+</head>
+
+<body>
+    <h1>Upload new File</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput">
+        <input type="submit" value="Upload">
+    </form>
+    <div id="message"></div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async(event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                document.getElementById('message').innerText = result;
+            } catch (error) {
+                document.getElementById('message').innerText = 'Error uploading file.';
+            }
+        });
+    </script>
+</body>
+
+</html>
